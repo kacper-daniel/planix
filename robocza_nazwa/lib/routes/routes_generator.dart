@@ -5,7 +5,7 @@ import 'package:robocza_nazwa/pages/budget_home.dart';
 import 'package:robocza_nazwa/pages/other/other_home.dart';
 import 'package:robocza_nazwa/pages/recipes_home.dart';
 import 'package:robocza_nazwa/routes/routes.dart';
-import 'package:robocza_nazwa/pages/shopping_home.dart';
+import 'package:robocza_nazwa/pages/shopping/shopping_home.dart';
 
 class RouteGenerator {
   static Route<dynamic>? generateRoute(RouteSettings settings) {
