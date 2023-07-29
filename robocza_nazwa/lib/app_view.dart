@@ -10,14 +10,6 @@ class AppView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: FloatingActionButton(
-          onPressed: (){
-            //TODO: add different logic based on current route
-          },
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          child: const Icon(Icons.add),
-        ),
         body: Column(
           children: [
             Expanded(
