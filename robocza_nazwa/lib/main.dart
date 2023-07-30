@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:robocza_nazwa/app_view.dart';
 import 'package:robocza_nazwa/routes/routes.dart';
 import 'package:robocza_nazwa/routes/routes_generator.dart';
+import 'package:robocza_nazwa/utils/user_preferences.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await UserSimplePreferences.init();
   runApp(const MyApp());
 }
 

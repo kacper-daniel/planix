@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_final_fields
+
 import 'package:flutter/material.dart';
+import 'package:robocza_nazwa/utils/user_preferences.dart';
 
 class ShoppingHome extends StatefulWidget {
   const ShoppingHome({super.key});
@@ -8,8 +11,8 @@ class ShoppingHome extends StatefulWidget {
 }
 
 class _ShoppingHomeState extends State<ShoppingHome> {
-  List<int> items = List<int>.generate(10, (int index) => index);
-  List<bool> checked = List<bool>.generate(10, (index) => false);
+  List<String> _savedShoppingList = UserSimplePreferences.getShoppingList() ?? [];
+  TextEditingController newElementController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -19,44 +22,51 @@ class _ShoppingHomeState extends State<ShoppingHome> {
           padding: const EdgeInsets.all(12.0),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
-            child: (items.isEmpty) ? const Text("Nothing to show here")
+            child: (_savedShoppingList.isEmpty) 
+            ? SizedBox(
+              height: MediaQuery.of(context).size.height * 0.75,
+              child: const Center(child: Text("Nothing to show here", style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600),))
+            )
             : ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: items.length,
+              itemCount: _savedShoppingList.length,
               itemBuilder: (BuildContext context, int index){
                 return Dismissible(
-                  key: ValueKey(items[index]), 
+                  key: UniqueKey(), 
                   child: GestureDetector(
                     onTap: (){
                       setState(() {
-                        if (checked[index]){
-                        checked[index] = false;
+                        if (_savedShoppingList[index].split(";")[1] == 'true'){
+                          _savedShoppingList[index] = "${_savedShoppingList[index].split(";")[0]};false";
                         } else{
-                          checked[index] = true;
+                          _savedShoppingList[index] = "${_savedShoppingList[index].split(";")[0]};true";
                         }
+
+                        UserSimplePreferences.setShoppingList(_savedShoppingList);
                       });
                     },
                     child: Card(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text("${items[index]}", style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),),
-                            ),
                             Checkbox(
-                              value: checked[index], 
+                              value: _savedShoppingList[index].split(";")[1] == 'true' ? true : false, 
                               onChanged: (bool? value){
                                 setState(() {
-                                  checked[index] = value!;
+                                  _savedShoppingList[index] = "${_savedShoppingList[index].split(";")[0]};${value.toString()}";
+                                  UserSimplePreferences.setShoppingList(_savedShoppingList);
                                 });
                               },
                               fillColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
                                 return Colors.red;
                               })
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(_savedShoppingList[index].split(";")[0].toString(), style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),),
                             )
                           ],
                         ),
@@ -65,7 +75,8 @@ class _ShoppingHomeState extends State<ShoppingHome> {
                   ),
                   onDismissed: (DismissDirection direction) {
                     setState(() {
-                      items.removeAt(index);
+                      _savedShoppingList.removeAt(index);
+                      UserSimplePreferences.setShoppingList(_savedShoppingList);
                     });
                   },
                 );
@@ -95,7 +106,12 @@ class _ShoppingHomeState extends State<ShoppingHome> {
                     borderRadius: BorderRadius.circular(50),
                     child: InkWell(
                       onTap: () {
-                        //TODO: implement adding new elemnt to list
+                        showDialog(
+                          context: context, 
+                          builder: (BuildContext context) {
+                            return newElementDialog();
+                          }
+                        );
                       },
                       borderRadius: BorderRadius.circular(50),
                       child: Container(
@@ -143,6 +159,48 @@ class _ShoppingHomeState extends State<ShoppingHome> {
               ),
             ],
           ),
+        )
+      ],
+    );
+  }
+
+  Widget newElementDialog(){
+    return AlertDialog(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(16.0))
+      ),
+      content: SizedBox(
+        height: 100,
+        child: Center(
+          child: TextFormField(
+            controller: newElementController,
+            decoration: const InputDecoration(
+              border: UnderlineInputBorder(),
+              labelText: 'Enter new item',
+            ),
+          ),
+        ),
+      ),
+      actions: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            IconButton(onPressed: (){
+              Navigator.of(context).pop();
+            }, icon: Icon(Icons.close, color: Theme.of(context).colorScheme.primary,)),
+            IconButton(onPressed: (){
+              if (newElementController.text != ""){
+                setState(() {
+                  _savedShoppingList.add("${newElementController.text};false");
+                  UserSimplePreferences.setShoppingList(_savedShoppingList);
+                  newElementController.text = "";
+                });
+                Navigator.of(context).pop();
+              } else{
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Invalid input")));
+              }
+            }, icon: Icon(Icons.done, color: Theme.of(context).colorScheme.primary,))
+          ],
         )
       ],
     );
