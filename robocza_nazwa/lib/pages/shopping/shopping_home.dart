@@ -173,6 +173,7 @@ class _ShoppingHomeState extends State<ShoppingHome> {
         height: 100,
         child: Center(
           child: TextFormField(
+            autofocus: true,
             controller: newElementController,
             decoration: const InputDecoration(
               border: UnderlineInputBorder(),
