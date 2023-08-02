@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_final_fields
 
 import 'package:flutter/material.dart';
+import 'package:robocza_nazwa/routes/routes.dart';
 import 'package:robocza_nazwa/utils/user_preferences.dart';
 
 class ShoppingHome extends StatefulWidget {
@@ -144,6 +145,8 @@ class _ShoppingHomeState extends State<ShoppingHome> {
                     borderRadius: BorderRadius.circular(50),
                     child: InkWell(                   
                       onTap: () {
+                        var helper = _savedShoppingList.where((element) => element.split(";")[1] == "true").toList();
+                        navKey.currentState?.pushNamed("/activeShoppingList", arguments: helper);
                         //TODO: implement going to shopping list with selected items
                       },
                       borderRadius: BorderRadius.circular(50),

@@ -8,8 +8,31 @@ class ShoppingActiveList extends StatefulWidget {
 }
 
 class _ShoppingActiveListState extends State<ShoppingActiveList> {
+  late List<String>? activeList;
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    final arguments = ModalRoute.of(context)?.settings.arguments as List<String>;
+    activeList = arguments;
+    return Column(
+      children: [
+        (activeList == null) ? SizedBox(height: MediaQuery.of(context).size.height * 0.75,) 
+        : SizedBox(
+          height: MediaQuery.of(context).size.height * 0.75,
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: activeList!.length,
+            itemBuilder: (BuildContext context, index) {
+              return Dismissible(
+                key: UniqueKey(), 
+                child: Card(
+                  child: Text(activeList![index].toString().split(";")[0]),
+                )
+              );
+            }
+          ),
+        )
+      ],
+    );
   }
 }
