@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:robocza_nazwa/utils/user_preferences.dart';
+import 'package:robocza_nazwa/widgets/category_container.dart';
 import 'package:robocza_nazwa/widgets/recipe_preview_box.dart';
 
 class RecipesHome extends StatefulWidget {
@@ -15,14 +16,18 @@ class _RecipesHomeState extends State<RecipesHome> {
   List<String> categories = ['Breakfast', 'Lunch', 'Dinner', 'Dessert', 'Other'];
   List<int> catSelected = [];
 
-  List<String> _savedRecipeList = UserSimplePreferences.getShoppingList() ?? [];
+  List<String> _savedRecipeList = UserSimplePreferences.getRecipeList() ?? [];
+
+  TextEditingController recipeTitleController = TextEditingController();
+  TextEditingController recipeDescriptionController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
+  List<int> newRecipeCatSelected = [];
 
   //TODO: create search bar for browsing recipes
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData mode = Theme.of(context);
-
     return SizedBox(
       height: MediaQuery.of(context).size.height * .8,
       child: Column(
@@ -50,21 +55,7 @@ class _RecipesHomeState extends State<RecipesHome> {
                           setState(() {});
                         }
                       },
-                      child: Container(
-                        height: 30,
-                        decoration: BoxDecoration(
-                          border: (catSelected.contains(index) ? Border.all(color: Colors.green) : Border.all(color: Colors.white)),
-                          borderRadius: BorderRadius.circular(15),
-                          color: Theme.of(context).colorScheme.background,
-                          boxShadow: [BoxShadow(color: (mode == ThemeData.dark()) ? Colors.white54 : Colors.black54, blurRadius: 3.5, spreadRadius: 0.1)]
-                        ),
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(categories[index], style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0)),
-                          ),
-                        ),
-                      ),
+                      child: CategoryContainer(isSelected: catSelected.contains(index), text: categories[index])
                     ),
                   );
                 }
@@ -80,11 +71,14 @@ class _RecipesHomeState extends State<RecipesHome> {
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 12.0, mainAxisSpacing: 12.0), 
                 itemCount: _savedRecipeList.length,
                 itemBuilder: ((context, index) {
-                    return GestureDetector(
-                      onTap: (){
-                        //TODO: implement going to recipe details
-                      },
-                      child: RecipePreviewBox(title: _savedRecipeList[index].split(";")[1], category: _savedRecipeList[index].split(";")[0]),
+                    return Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: GestureDetector(
+                        onTap: (){
+                          //TODO: implement going to recipe details
+                        },
+                        child: RecipePreviewBox(title: _savedRecipeList[index].split(";")[0], category: _savedRecipeList[index].split(";")[1]),
+                      ),
                     );
                 })
               ),
@@ -140,6 +134,13 @@ class _RecipesHomeState extends State<RecipesHome> {
                       borderRadius: BorderRadius.circular(14),
                       child: InkWell(
                         onTap: () {
+                          showDialog(
+                            barrierDismissible: false,
+                            context: context, 
+                            builder: (BuildContext context){
+                              return newRecipe();
+                            }
+                          );
                           //TODO: implement adding new recipe
                         },
                         borderRadius: BorderRadius.circular(50),
@@ -158,6 +159,122 @@ class _RecipesHomeState extends State<RecipesHome> {
           )
         ],
       ),
+    );
+  }
+
+  Widget newRecipe(){
+    return AlertDialog(
+      content: StatefulBuilder(
+        builder: (context, setState){
+          return SizedBox(
+          width: MediaQuery.of(context).size.width * .9,
+          height: MediaQuery.of(context).size.height * .7,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    validator: (value){
+                      if (value == null){
+                        return "Please enter some text";
+                      } else{
+                        return null;
+                      }
+                    },
+                    autofocus: true,
+                    controller: recipeTitleController,
+                    decoration: const InputDecoration(
+                      border: UnderlineInputBorder(),
+                      labelText: 'Enter title',
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 50,
+                  width: MediaQuery.of(context).size.width * .8,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    itemCount: categories.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GestureDetector(
+                          onTap: (){
+                            if (newRecipeCatSelected.contains(index)){
+                              newRecipeCatSelected.remove(index);
+                              setState(() {});
+                            } else{
+                              newRecipeCatSelected.add(index);
+                              setState(() {});
+                            }
+                          },
+                          child: CategoryContainer(isSelected: newRecipeCatSelected.contains(index), text: categories[index])
+                        ),
+                      );
+                    }
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * .25),
+                    child: SingleChildScrollView(
+                      child: TextFormField(
+                        validator: (value){
+                          if (value == null){
+                            return 'Please enter some text';
+                          } else if (value.contains(";")){
+                            return '";" is not allowed in a description';
+                          } else{
+                            return null;
+                          }
+                        },
+                        autofocus: false,
+                        controller: recipeDescriptionController,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,  
+                        decoration: const InputDecoration.collapsed(hintText: "Enter recipe")
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },       
+      ),
+      actions: [
+        IconButton(onPressed: (){
+          setState(() {
+            recipeTitleController.text = "";
+            recipeDescriptionController.text = "";
+            newRecipeCatSelected = [];
+          });
+          Navigator.of(context).pop();
+        }, icon: Icon(Icons.close, color: Theme.of(context).colorScheme.primary,)),
+        IconButton(onPressed: (){
+          if (_formKey.currentState!.validate()){
+            var helper = UserSimplePreferences.getRecipeList() ?? [];
+            var helperCategories = [];
+            for (int x = 0; x < newRecipeCatSelected.length; x++){
+              helperCategories.add(categories[newRecipeCatSelected[x]]);
+            }
+            helper.add("${recipeTitleController.text};${helperCategories.join(",")};${recipeDescriptionController.text}");
+            setState(() {
+              recipeTitleController.text = "";
+              recipeDescriptionController.text = "";
+              newRecipeCatSelected = [];
+              UserSimplePreferences.setRecipeList(helper);
+              _savedRecipeList = UserSimplePreferences.getRecipeList() ?? [];
+            });
+            Navigator.of(context).pop();
+          }
+        }, icon: Icon(Icons.done, color: Theme.of(context).colorScheme.primary,))
+      ]
     );
   }
 }

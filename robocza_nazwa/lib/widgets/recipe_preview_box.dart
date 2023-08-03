@@ -14,7 +14,8 @@ class RecipePreviewBox extends StatelessWidget {
       const Icon(Icons.lunch_dining),
       const Icon(Icons.local_dining_rounded),
       const Icon(Icons.icecream),
-      const Icon(Icons.question_mark)
+      const Icon(Icons.question_mark),
+      const Icon(Icons.diamond)
     ];
 
     return Container(
@@ -30,8 +31,8 @@ class RecipePreviewBox extends StatelessWidget {
           Text(title),
           Row(
             children: [
-              category == "Breakfast" ? icons[0] : category == "Lunch" ? icons[1] : category == "Dinner" ? icons[2] : category == "Dinner" ? icons[3] : icons[4],
-              Text(category)
+              category == "Breakfast" ? icons[0] : category == "Lunch" ? icons[1] : category == "Dinner" ? icons[2] : category == "Dinner" ? icons[3] : category.contains(",") ? icons[5] : icons[4],
+              Text(category.contains(",") ? "Universal" : category)
             ],
           )
         ],
