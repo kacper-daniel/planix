@@ -17,6 +17,8 @@ class _RecipesHomeState extends State<RecipesHome> {
 
   List<String> _savedRecipeList = UserSimplePreferences.getShoppingList() ?? [];
 
+  //TODO: create search bar for browsing recipes
+
   @override
   Widget build(BuildContext context) {
     final ThemeData mode = Theme.of(context);

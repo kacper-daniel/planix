@@ -15,6 +15,8 @@ class _ShoppingHomeState extends State<ShoppingHome> {
   List<String> _savedShoppingList = UserSimplePreferences.getShoppingList() ?? [];
   TextEditingController newElementController = TextEditingController();
 
+  //TODO: create search bar for browsing products
+
   @override
   Widget build(BuildContext context) {
     return Stack(

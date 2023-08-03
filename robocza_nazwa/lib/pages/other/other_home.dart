@@ -10,6 +10,8 @@ class OtherHome extends StatefulWidget {
 class _OtherHomeState extends State<OtherHome> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      //TODO: create budget layout
+    );
   }
 }
