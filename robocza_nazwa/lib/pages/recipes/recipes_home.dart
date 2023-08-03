@@ -80,7 +80,7 @@ class _RecipesHomeState extends State<RecipesHome> {
                 itemBuilder: ((context, index) {
                     return GestureDetector(
                       onTap: (){
-                        
+                        //TODO: implement going to recipe details
                       },
                       child: RecipePreviewBox(title: _savedRecipeList[index].split(";")[1], category: _savedRecipeList[index].split(";")[0]),
                     );
@@ -138,7 +138,7 @@ class _RecipesHomeState extends State<RecipesHome> {
                       borderRadius: BorderRadius.circular(14),
                       child: InkWell(
                         onTap: () {
-                          //TODO: implement recipe randomizer
+                          //TODO: implement adding new recipe
                         },
                         borderRadius: BorderRadius.circular(50),
                         child: Container(

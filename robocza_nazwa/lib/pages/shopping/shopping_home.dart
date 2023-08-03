@@ -147,7 +147,6 @@ class _ShoppingHomeState extends State<ShoppingHome> {
                       onTap: () {
                         var helper = _savedShoppingList.where((element) => element.split(";")[1] == "true").toList();
                         navKey.currentState?.pushNamed("/activeShoppingList", arguments: helper);
-                        //TODO: implement going to shopping list with selected items
                       },
                       borderRadius: BorderRadius.circular(50),
                       child: Container(
