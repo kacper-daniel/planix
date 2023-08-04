@@ -1,7 +1,6 @@
 // ignore_for_file: unused_field, prefer_final_fields
 
 import 'package:flutter/material.dart';
-import 'package:robocza_nazwa/pages/recipes/recipe_details.dart';
 import 'package:robocza_nazwa/utils/user_preferences.dart';
 import 'package:robocza_nazwa/widgets/category_container.dart';
 import 'package:robocza_nazwa/widgets/recipe_preview_box.dart';
@@ -77,7 +76,6 @@ class _RecipesHomeState extends State<RecipesHome> {
                       child: GestureDetector(
                         onTap: (){
                           Navigator.of(context).pushReplacementNamed('/recipeDetails', arguments: index);
-                          //TODO: implement going to recipe details
                         },
                         child: RecipePreviewBox(title: _savedRecipeList[index].split(";")[0], category: _savedRecipeList[index].split(";")[1]),
                       ),
@@ -143,7 +141,6 @@ class _RecipesHomeState extends State<RecipesHome> {
                               return newRecipe();
                             }
                           );
-                          //TODO: implement adding new recipe
                         },
                         borderRadius: BorderRadius.circular(50),
                         child: Container(
