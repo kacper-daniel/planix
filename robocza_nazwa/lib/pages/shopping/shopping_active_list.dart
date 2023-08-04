@@ -114,7 +114,7 @@ class _ShoppingActiveListState extends State<ShoppingActiveList> {
                           UserSimplePreferences.setShoppingList(helper);
                         }
                         setState(() {});
-                        Navigator.of(context).pushNamed("/shopping");
+                        Navigator.of(context).pushReplacementNamed("/shopping");
                       },
                       borderRadius: BorderRadius.circular(50),
                       child: Container(

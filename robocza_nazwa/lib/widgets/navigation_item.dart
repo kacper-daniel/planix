@@ -25,7 +25,7 @@ class _NavigationItemState extends State<NavigationItem> {
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: InkWell(
         onTap: (){
-          navKey.currentState?.pushNamed(widget.routeName);
+          navKey.currentState?.pushReplacementNamed(widget.routeName);
           if (widget.onHighlight != null){
             widget.onHighlight!(widget.routeName);
           }

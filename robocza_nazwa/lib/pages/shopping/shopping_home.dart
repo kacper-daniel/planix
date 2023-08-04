@@ -148,7 +148,7 @@ class _ShoppingHomeState extends State<ShoppingHome> {
                     child: InkWell(                   
                       onTap: () {
                         var helper = _savedShoppingList.where((element) => element.split(";")[1] == "true").toList();
-                        navKey.currentState?.pushNamed("/activeShoppingList", arguments: helper);
+                        navKey.currentState?.pushReplacementNamed("/activeShoppingList", arguments: helper);
                       },
                       borderRadius: BorderRadius.circular(50),
                       child: Container(

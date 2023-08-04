@@ -1,6 +1,7 @@
 // ignore_for_file: unused_field, prefer_final_fields
 
 import 'package:flutter/material.dart';
+import 'package:robocza_nazwa/pages/recipes/recipe_details.dart';
 import 'package:robocza_nazwa/utils/user_preferences.dart';
 import 'package:robocza_nazwa/widgets/category_container.dart';
 import 'package:robocza_nazwa/widgets/recipe_preview_box.dart';
@@ -75,6 +76,7 @@ class _RecipesHomeState extends State<RecipesHome> {
                       padding: const EdgeInsets.all(16.0),
                       child: GestureDetector(
                         onTap: (){
+                          Navigator.of(context).pushReplacementNamed('/recipeDetails', arguments: index);
                           //TODO: implement going to recipe details
                         },
                         child: RecipePreviewBox(title: _savedRecipeList[index].split(";")[0], category: _savedRecipeList[index].split(";")[1]),
@@ -162,6 +164,10 @@ class _RecipesHomeState extends State<RecipesHome> {
     );
   }
 
+  // new recipe is saved in a string delimited by ";" and with this particular order:
+  // [0] - Title
+  // [1] - Categories
+  // [2] - Description
   Widget newRecipe(){
     return AlertDialog(
       content: StatefulBuilder(

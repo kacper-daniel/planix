@@ -5,5 +5,6 @@ const String routeActiveShoppingList = '/activeShoppingList';
 const String routeRecipes = '/recipes';
 const String routeBudget = '/budget';
 const String routeOther = '/other';
+const String routeRecipeDetails = '/recipeDetails';
 
 final navKey = GlobalKey<NavigatorState>();
