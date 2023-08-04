@@ -62,25 +62,26 @@ class _RecipesHomeState extends State<RecipesHome> {
               ),
             ),
           ),
+          const SizedBox(height: 16.0,),
           Expanded(
             child: (_savedRecipeList.isEmpty) ? const Center(child: Text("Nothing to show here", style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600)),)
             : SingleChildScrollView(
-              child: GridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 12.0, mainAxisSpacing: 12.0), 
-                itemCount: _savedRecipeList.length,
-                itemBuilder: ((context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: GestureDetector(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 16.0, mainAxisSpacing: 16.0), 
+                  itemCount: _savedRecipeList.length,
+                  itemBuilder: ((context, index) {
+                      return GestureDetector(
                         onTap: (){
                           Navigator.of(context).pushReplacementNamed('/recipeDetails', arguments: index);
                         },
                         child: RecipePreviewBox(title: _savedRecipeList[index].split(";")[0], category: _savedRecipeList[index].split(";")[1]),
-                      ),
-                    );
-                })
+                      );
+                  })
+                ),
               ),
             ),
           ),

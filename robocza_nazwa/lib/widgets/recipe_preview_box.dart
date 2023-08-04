@@ -28,10 +28,12 @@ class RecipePreviewBox extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Text(title),
+          Text(title, style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0),),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               category == "Breakfast" ? icons[0] : category == "Lunch" ? icons[1] : category == "Dinner" ? icons[2] : category == "Dinner" ? icons[3] : category.contains(",") ? icons[5] : icons[4],
+              const SizedBox(width: 12.0,),
               Text(category.contains(",") ? "Universal" : category)
             ],
           )
