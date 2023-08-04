@@ -17,6 +17,7 @@ class _RecipesHomeState extends State<RecipesHome> {
   List<int> catSelected = [];
 
   List<String> _savedRecipeList = UserSimplePreferences.getRecipeList() ?? [];
+  List<List<dynamic>> filteredRecipeList = [];
 
   TextEditingController recipeTitleController = TextEditingController();
   TextEditingController recipeDescriptionController = TextEditingController();
@@ -49,11 +50,29 @@ class _RecipesHomeState extends State<RecipesHome> {
                       onTap: (){
                         if (catSelected.contains(index)){
                           catSelected.remove(index);
-                          setState(() {});
                         } else{
                           catSelected.add(index);
-                          setState(() {});
                         }
+
+                        if (catSelected.isNotEmpty){
+                          filteredRecipeList = [];
+                          for(int i = 0; i < _savedRecipeList.length; i++){
+                            List<String> helperCategories = _savedRecipeList[i].split(";")[1].split(",");
+                            List<String> helperSelectedCategories = [];
+                            for (int j = 0; j < catSelected.length; j++){
+                              helperSelectedCategories.add(categories[catSelected[j]]);
+                            }
+                            for (int j = 0; j < helperCategories.length; j++){
+                              if (helperSelectedCategories.contains(helperCategories[j])){
+                                filteredRecipeList.add([_savedRecipeList[i], i]);
+                              }
+                            }
+                          }
+                        } else{
+                          filteredRecipeList = [];
+                        }
+
+                        setState(() {});
                       },
                       child: CategoryContainer(isSelected: catSelected.contains(index), text: categories[index])
                     ),
@@ -68,20 +87,34 @@ class _RecipesHomeState extends State<RecipesHome> {
             : SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: GridView.builder(
+                child: (catSelected.isEmpty) ? GridView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 16.0, mainAxisSpacing: 16.0), 
                   itemCount: _savedRecipeList.length,
                   itemBuilder: ((context, index) {
-                      return GestureDetector(
-                        onTap: (){
-                          Navigator.of(context).pushReplacementNamed('/recipeDetails', arguments: index);
-                        },
-                        child: RecipePreviewBox(title: _savedRecipeList[index].split(";")[0], category: _savedRecipeList[index].split(";")[1]),
-                      );
+                    return GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).pushReplacementNamed('/recipeDetails', arguments: index);
+                      },
+                      child: RecipePreviewBox(title: _savedRecipeList[index].split(";")[0], category: _savedRecipeList[index].split(";")[1]),
+                    );
                   })
-                ),
+                )
+                : GridView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 16.0, mainAxisSpacing: 16.0), 
+                  itemCount: filteredRecipeList.length,
+                  itemBuilder: ((context, index) {
+                    return GestureDetector(
+                      onTap: (){
+                        Navigator.of(context).pushReplacementNamed('/recipeDetails', arguments: filteredRecipeList[index][1]);
+                      },
+                      child: RecipePreviewBox(title: filteredRecipeList[index][0].split(";")[0], category: filteredRecipeList[index][0].split(";")[1]),
+                    );
+                  })
+                )
               ),
             ),
           ),
