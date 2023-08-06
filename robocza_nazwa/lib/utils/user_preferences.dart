@@ -5,6 +5,7 @@ class UserSimplePreferences {
 
   static const _keyShoppingList = "shoppingList";
   static const _keyRecipeList = "recipeList";
+  static const _keyToDoList = "toDoList";
 
   static Future init() async =>
     _preferences = await SharedPreferences.getInstance();
@@ -18,4 +19,9 @@ class UserSimplePreferences {
     await _preferences.setStringList(_keyRecipeList, recipeList);
 
   static List<String>? getRecipeList() => _preferences.getStringList(_keyRecipeList);
+
+  static Future setToDoList(List<String> toDoList) async =>
+    await _preferences.setStringList(_keyToDoList, toDoList);
+
+  static List<String>? getToDoList() => _preferences.getStringList(_keyToDoList);
 }

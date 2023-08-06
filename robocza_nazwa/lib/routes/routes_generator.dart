@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:robocza_nazwa/pages/budget_home.dart';
 import 'package:robocza_nazwa/pages/other/other_home.dart';
+import 'package:robocza_nazwa/pages/other/simple_todo.dart';
 import 'package:robocza_nazwa/pages/recipes/recipe_details.dart';
 import 'package:robocza_nazwa/pages/recipes/recipes_home.dart';
 import 'package:robocza_nazwa/pages/shopping/shopping_active_list.dart';
@@ -58,6 +59,14 @@ class RouteGenerator {
           reverseTransitionDuration: Duration.zero,
           settings: settings,
           pageBuilder: (_, __, ___) => const RecipeDetails()
+        );
+        break;
+      case routeToDo:
+        return PageRouteBuilder(
+          transitionDuration: Duration.zero,
+          reverseTransitionDuration: Duration.zero,
+          settings: settings,
+          pageBuilder: (_, __, ___) => const SimpleToDoList()
         );
         break;
     } 

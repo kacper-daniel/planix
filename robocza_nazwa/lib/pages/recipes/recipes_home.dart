@@ -27,8 +27,6 @@ class _RecipesHomeState extends State<RecipesHome> {
 
   List<int> newRecipeCatSelected = [];
 
-  //TODO: create search bar for browsing recipes
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -163,9 +161,8 @@ class _RecipesHomeState extends State<RecipesHome> {
                               }
                             );
                           } else{
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("No recipes to choose from")));
+                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("No recipes to choose from")));
                           }
-                          //TODO: implement recipe randomizer
                         },
                         borderRadius: BorderRadius.circular(50),
                         child: Container(

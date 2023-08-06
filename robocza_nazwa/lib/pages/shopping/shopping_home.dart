@@ -16,9 +16,7 @@ class _ShoppingHomeState extends State<ShoppingHome> {
   TextEditingController newElementController = TextEditingController();
   TextEditingController searchController = TextEditingController();
   List<int> _searchIndexList = [];
-
-  //TODO: create search bar for browsing products
-
+  
   @override
   Widget build(BuildContext context) {
     return Stack(
