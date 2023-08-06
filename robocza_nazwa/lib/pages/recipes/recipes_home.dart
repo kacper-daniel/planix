@@ -1,5 +1,7 @@
 // ignore_for_file: unused_field, prefer_final_fields
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:robocza_nazwa/utils/user_preferences.dart';
 import 'package:robocza_nazwa/widgets/category_container.dart';
@@ -140,6 +142,29 @@ class _RecipesHomeState extends State<RecipesHome> {
                       borderRadius: BorderRadius.circular(14),
                       child: InkWell(
                         onTap: () {
+                          var helper = [];
+                          for (int i = 0; i < catSelected.length; i++){
+                            helper.add(categories[catSelected[i]]);
+                          }
+                          var randomIndex = Random();
+
+                          if(filteredRecipeList.isEmpty && catSelected.isEmpty){
+                            showDialog(
+                              context: context, 
+                              builder: (BuildContext context){
+                                return randomRecipeDialog(randomIndex.nextInt(_savedRecipeList.length), helper.join(", "));
+                              }
+                            );
+                          } else if (filteredRecipeList.isNotEmpty){
+                            showDialog(
+                              context: context, 
+                              builder: (BuildContext context){
+                                return randomRecipeDialog(randomIndex.nextInt(filteredRecipeList.length), helper.join(", "));
+                              }
+                            );
+                          } else{
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("No recipes to choose from")));
+                          }
                           //TODO: implement recipe randomizer
                         },
                         borderRadius: BorderRadius.circular(50),
@@ -260,15 +285,6 @@ class _RecipesHomeState extends State<RecipesHome> {
                     constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * .25),
                     child: SingleChildScrollView(
                       child: TextFormField(
-                        validator: (value){
-                          if (value == null){
-                            return 'Please enter some text';
-                          } else if (value.contains(";")){
-                            return '";" is not allowed in a description';
-                          } else{
-                            return null;
-                          }
-                        },
                         autofocus: false,
                         controller: recipeDescriptionController,
                         keyboardType: TextInputType.multiline,
@@ -312,6 +328,86 @@ class _RecipesHomeState extends State<RecipesHome> {
           }
         }, icon: Icon(Icons.done, color: Theme.of(context).colorScheme.primary,))
       ]
+    );
+  }
+
+  Widget randomRecipeDialog(int index, String selectedCategories){
+    return AlertDialog(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(16.0))
+      ),
+      content: SizedBox(
+        height: 100,
+        child: Column(
+          children: [
+            const Text("From categories:", style: TextStyle(fontSize: 15),),
+
+            (selectedCategories == "") 
+            ? const Text("All", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18),) 
+            : Text(selectedCategories, style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 18)),
+
+            const SizedBox(height: 16,),
+
+            (filteredRecipeList.isEmpty && catSelected.isEmpty) 
+            ? Text(_savedRecipeList[index].split(";")[0], style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 26),) 
+            : Text(filteredRecipeList[index][0].split(";")[0], style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 26))
+          ],
+        ),
+      ),
+      actions: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Material(
+              color: Theme.of(context).colorScheme.primary,
+              borderRadius: BorderRadius.circular(14),
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).pop();
+                  showDialog(
+                    context: context, 
+                    builder: (BuildContext context){
+                      var randomIndex = Random();
+                      if (filteredRecipeList.isEmpty && catSelected.isEmpty){
+                        return randomRecipeDialog(randomIndex.nextInt(_savedRecipeList.length), selectedCategories);
+                      } else{
+                        return randomRecipeDialog(randomIndex.nextInt(filteredRecipeList.length), selectedCategories);
+                      }
+                    }
+                  );
+                },
+                borderRadius: BorderRadius.circular(50),
+                child: Container(
+                  width: 100,
+                  height: 40,
+                  alignment: Alignment.center,
+                  child: Text("Try again", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: Theme.of(context).colorScheme.background),),
+                ),
+              ),
+            ),
+            Material(
+              color: Theme.of(context).colorScheme.primary,
+              borderRadius: BorderRadius.circular(14),
+              child: InkWell(
+                onTap: () {
+                  if (filteredRecipeList.isEmpty && catSelected.isEmpty){
+                    Navigator.of(context).pushReplacementNamed("/recipeDetails", arguments: index);
+                  } else{
+                    Navigator.of(context).pushReplacementNamed("/recipeDetails", arguments: filteredRecipeList[index][1]);
+                  }
+                },
+                borderRadius: BorderRadius.circular(50),
+                child: Container(
+                  width: 100,
+                  height: 40,
+                  alignment: Alignment.center,
+                  child: Text("Go to recipe", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: Theme.of(context).colorScheme.background),),
+                ),
+              ),
+            ),
+          ],
+        )
+      ],
     );
   }
 }
