@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:robocza_nazwa/utils/category_icons.dart';
 import 'package:robocza_nazwa/utils/user_preferences.dart';
 
 class RecipeDetails extends StatefulWidget {
@@ -10,15 +11,6 @@ class RecipeDetails extends StatefulWidget {
 
 class _RecipeDetailsState extends State<RecipeDetails> {
   List<String> savedRecipes = UserSimplePreferences.getRecipeList() ?? [];
-
-  final icons = [
-      const Icon(Icons.free_breakfast),
-      const Icon(Icons.lunch_dining),
-      const Icon(Icons.local_dining_rounded),
-      const Icon(Icons.icecream),
-      const Icon(Icons.question_mark),
-      const Icon(Icons.diamond)
-    ];
 
   @override
   Widget build(BuildContext context) {

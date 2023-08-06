@@ -27,6 +27,21 @@ class _OtherHomeState extends State<OtherHome> {
               ),
             ),
           ),
+        ),
+        GestureDetector(
+          onTap: (){
+            Navigator.of(context).pushReplacementNamed("/settings");
+          },
+          child: const Card(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              child: SizedBox(
+                height: 50,
+                width: 200,
+                child: Center(child: Text("Settings", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),))
+              ),
+            ),
+          ),
         )
       ],
     );

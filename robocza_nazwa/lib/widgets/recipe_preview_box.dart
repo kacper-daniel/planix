@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:robocza_nazwa/utils/category_icons.dart';
 
 class RecipePreviewBox extends StatelessWidget {
   final String title;
@@ -9,14 +10,6 @@ class RecipePreviewBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData mode = Theme.of(context);
-    final icons = [
-      const Icon(Icons.free_breakfast),
-      const Icon(Icons.lunch_dining),
-      const Icon(Icons.local_dining_rounded),
-      const Icon(Icons.icecream),
-      const Icon(Icons.question_mark),
-      const Icon(Icons.diamond)
-    ];
 
     return Container(
       height: 80,
@@ -32,7 +25,7 @@ class RecipePreviewBox extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              category == "Breakfast" ? icons[0] : category == "Lunch" ? icons[1] : category == "Dinner" ? icons[2] : category == "Dinner" ? icons[3] : category.contains(",") ? icons[5] : icons[4],
+              category == "Breakfast" ? icons[0] : category == "Lunch" ? icons[1] : category == "Dinner" ? icons[2] : category == "Dessert" ? icons[3] : category.contains(",") ? icons[5] : icons[4],
               const SizedBox(width: 12.0,),
               Text(category.contains(",") ? "Universal" : category)
             ],

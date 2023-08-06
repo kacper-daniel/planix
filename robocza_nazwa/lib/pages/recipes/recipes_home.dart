@@ -88,6 +88,7 @@ class _RecipesHomeState extends State<RecipesHome> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: (catSelected.isEmpty) ? GridView.builder(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 16.0, mainAxisSpacing: 16.0), 
@@ -102,6 +103,7 @@ class _RecipesHomeState extends State<RecipesHome> {
                   })
                 )
                 : GridView.builder(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 16.0, mainAxisSpacing: 16.0), 
