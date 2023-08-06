@@ -31,7 +31,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       child: Row(
         children: [
           SizedBox(
-            height: 70,
+            height: MediaQuery.of(context).size.height * 0.09,
             width: MediaQuery.of(context).size.width * 1,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,

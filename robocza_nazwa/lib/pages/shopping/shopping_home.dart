@@ -14,6 +14,8 @@ class ShoppingHome extends StatefulWidget {
 class _ShoppingHomeState extends State<ShoppingHome> {
   List<String> _savedShoppingList = UserSimplePreferences.getShoppingList() ?? [];
   TextEditingController newElementController = TextEditingController();
+  TextEditingController searchController = TextEditingController();
+  List<int> _searchIndexList = [];
 
   //TODO: create search bar for browsing products
 
@@ -22,7 +24,7 @@ class _ShoppingHomeState extends State<ShoppingHome> {
     return Stack(
       children: [
         Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.only(bottom: 12.0, left: 12.0, right: 12.0, top: 60),
           child: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: (_savedShoppingList.isEmpty) 
@@ -30,7 +32,7 @@ class _ShoppingHomeState extends State<ShoppingHome> {
               height: MediaQuery.of(context).size.height * 0.75,
               child: const Center(child: Text("Nothing to show here", style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600),))
             )
-            : ListView.builder(
+            : (searchController.text == "") ? ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: _savedShoppingList.length,
@@ -45,7 +47,7 @@ class _ShoppingHomeState extends State<ShoppingHome> {
                         } else{
                           _savedShoppingList[index] = "${_savedShoppingList[index].split(";")[0]};true";
                         }
-
+    
                         UserSimplePreferences.setShoppingList(_savedShoppingList);
                       });
                     },
@@ -84,7 +86,62 @@ class _ShoppingHomeState extends State<ShoppingHome> {
                   },
                 );
               }
-            ),
+            )
+            : ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: _searchIndexList.length,
+              itemBuilder: (BuildContext context, int index){
+                return Dismissible(
+                  key: UniqueKey(), 
+                  child: GestureDetector(
+                    onTap: (){
+                      setState(() {
+                        if (_savedShoppingList[_searchIndexList[index]].split(";")[1] == 'true'){
+                          _savedShoppingList[_searchIndexList[index]] = "${_savedShoppingList[_searchIndexList[index]].split(";")[0]};false";
+                        } else{
+                          _savedShoppingList[_searchIndexList[index]] = "${_savedShoppingList[_searchIndexList[index]].split(";")[0]};true";
+                        }
+    
+                        UserSimplePreferences.setShoppingList(_savedShoppingList);
+                      });
+                    },
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Checkbox(
+                              value: _savedShoppingList[_searchIndexList[index]].split(";")[1] == 'true' ? true : false, 
+                              onChanged: (bool? value){
+                                setState(() {
+                                  _savedShoppingList[_searchIndexList[index]] = "${_savedShoppingList[_searchIndexList[index]].split(";")[0]};${value.toString()}";
+                                  UserSimplePreferences.setShoppingList(_savedShoppingList);
+                                });
+                              },
+                              fillColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+                                return Colors.red;
+                              })
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(_savedShoppingList[_searchIndexList[index]].split(";")[0].toString(), style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  onDismissed: (DismissDirection direction) {
+                    setState(() {
+                      _savedShoppingList.removeAt(_searchIndexList[index]);
+                      UserSimplePreferences.setShoppingList(_savedShoppingList);
+                    });
+                  },
+                );
+              }
+            )
           ),
         ),
         Align(
@@ -163,7 +220,45 @@ class _ShoppingHomeState extends State<ShoppingHome> {
               ),
             ],
           ),
-        )
+        ),
+        Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Container(
+            height: 46,
+            decoration:  BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(40),
+              boxShadow: const [
+                BoxShadow(color: Colors.grey, blurRadius: 3.5, spreadRadius: 0.1)
+            ]),
+            child: TextFormField(       
+              controller: searchController,
+              onChanged: (String s) {
+                setState(() {
+                  _searchIndexList = [];
+                  for (int i = 0; i < _savedShoppingList.length; i++) {
+                      if (_savedShoppingList[i].split(";")[0].toLowerCase().contains(s.toLowerCase())) {
+                        _searchIndexList.add(i);
+                      }
+                  }
+                });
+              },
+              autofocus: false,
+              textInputAction: TextInputAction.search,
+              cursorColor: Colors.grey,
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(vertical: 1),
+                hintText: "Search here",
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(40)),
+                focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(40)),
+                prefixIcon: const Padding(
+                  padding: EdgeInsets.only(left: 20, right: 10),
+                  child: Icon(Icons.search, color: Colors.black,),
+                ),                         
+                )
+              ),
+          ),
+        ),
       ],
     );
   }
