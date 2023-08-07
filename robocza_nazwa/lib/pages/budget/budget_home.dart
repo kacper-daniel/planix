@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:robocza_nazwa/utils/calculate_balance_from_list.dart';
 import 'package:robocza_nazwa/utils/user_preferences.dart';
 
 class BudgetHome extends StatefulWidget {
@@ -13,19 +14,29 @@ class _BudgetHomeState extends State<BudgetHome> {
   List<String> savedMonthlyBudget = UserSimplePreferences.getMonthlyBudget() ?? [];
   List<String> savedYearlyBudget = UserSimplePreferences.getYearlyBudget() ?? [];
 
-  late int weeklySum;
-  late int monthlySum;
-  late int yearlySum;
+  late double weeklySum;
+  late double monthlySum;
+  late double yearlySum;
 
   final _budgetFormKey = GlobalKey<FormState>();
 
-  List<String> balanceItems = ['+', '-'];
-  String balanceDropdownValue = '+';
   List<String> timeTypeItems = ['Weekly', 'Monthly', 'Yearly'];
   String timeTypeDropdownValue = 'Weekly';
 
   TextEditingController newElementController = TextEditingController();
   TextEditingController valueController = TextEditingController();
+
+  void updateBalances(){
+    weeklySum = calculatedBalanceFromList(savedWeeklyBudget);
+    monthlySum = calculatedBalanceFromList(savedMonthlyBudget) + (weeklySum * 4);
+    yearlySum = calculatedBalanceFromList(savedYearlyBudget) + (monthlySum * 12);
+  }
+
+  @override
+  void initState() {
+    updateBalances();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +49,17 @@ class _BudgetHomeState extends State<BudgetHome> {
               padding: EdgeInsets.only(top: 8.0, left: 8.0),
               child: Text("Weekly"),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0, right: 8.0),
-              child: Text(UserSimplePreferences.getCurrencyType() ?? "PLN"),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0, right: 4.0),
+                  child: Text(weeklySum.toString()),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0, right: 8.0),
+                  child: Text(UserSimplePreferences.getCurrencyType() ?? "PLN"),
+                ),
+              ],
             )
           ],
         ),
@@ -69,13 +88,10 @@ class _BudgetHomeState extends State<BudgetHome> {
                       IconButton(onPressed: (){
                         savedWeeklyBudget.removeAt(index);
                         UserSimplePreferences.setWeeklyBudgetList(savedWeeklyBudget);
+                        updateBalances();
                         setState(() {});
                       }, icon: const Icon(Icons.delete), iconSize: 16,),
                       const VerticalDivider(color: Colors.black,),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                        child: Text(helper[3]),
-                      ), 
                       SizedBox(
                         width: 40,
                         child: Text(helper[1])
@@ -99,9 +115,17 @@ class _BudgetHomeState extends State<BudgetHome> {
               padding: EdgeInsets.only(left: 8.0),
               child: Text("Monthly"),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Text(UserSimplePreferences.getCurrencyType() ?? "PLN"),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: Text(monthlySum.toString()),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Text(UserSimplePreferences.getCurrencyType() ?? "PLN"),
+                ),
+              ],
             )
           ],
         ),
@@ -130,13 +154,10 @@ class _BudgetHomeState extends State<BudgetHome> {
                       IconButton(onPressed: (){
                         savedMonthlyBudget.removeAt(index);
                         UserSimplePreferences.setMonthlyBudgetList(savedMonthlyBudget);
+                        updateBalances();
                         setState(() {});
                       }, icon: const Icon(Icons.delete), iconSize: 16,),
                       const VerticalDivider(color: Colors.black,),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                        child: Text(helper[3]),
-                      ), 
                       SizedBox(
                         width: 40,
                         child: Text(helper[1])
@@ -160,9 +181,17 @@ class _BudgetHomeState extends State<BudgetHome> {
               padding: EdgeInsets.only(left: 8.0),
               child: Text("Yearly"),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Text(UserSimplePreferences.getCurrencyType() ?? "PLN"),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: Text(yearlySum.toString()),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Text(UserSimplePreferences.getCurrencyType() ?? "PLN"),
+                ),
+              ],
             )
           ],
         ),
@@ -191,13 +220,10 @@ class _BudgetHomeState extends State<BudgetHome> {
                       IconButton(onPressed: (){
                         savedYearlyBudget.removeAt(index);
                         UserSimplePreferences.setYearlyBudgetList(savedYearlyBudget);
+                        updateBalances();
                         setState(() {});
                       }, icon: const Icon(Icons.delete), iconSize: 16,),
-                      const VerticalDivider(color: Colors.black,),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                        child: Text(helper[3]),
-                      ), 
+                      const VerticalDivider(color: Colors.black,), 
                       SizedBox(
                         width: 40,
                         child: Text(helper[1])
@@ -277,25 +303,6 @@ class _BudgetHomeState extends State<BudgetHome> {
                     });
                   }
                 ),
-                DropdownButton(
-                  style: TextStyle(color: Theme.of(context).colorScheme.primary),
-                  underline: Container(
-                    height: 2,
-                    color: Theme.of(context).colorScheme.primary
-                  ),
-                  value: balanceDropdownValue,
-                  items: balanceItems.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(), 
-                  onChanged: (String? value) {
-                    setState(() {
-                      balanceDropdownValue = value!;
-                    });
-                  }
-                ),
                 Material(
                   color: Theme.of(context).colorScheme.primary,
                   borderRadius: BorderRadius.circular(14),
@@ -303,15 +310,16 @@ class _BudgetHomeState extends State<BudgetHome> {
                     onTap: () {
                       if (_budgetFormKey.currentState!.validate()){
                         if (timeTypeDropdownValue == "Weekly"){
-                          savedWeeklyBudget.add("${newElementController.text};${valueController.text};Weekly;${balanceDropdownValue}");
+                          savedWeeklyBudget.add("${newElementController.text};${valueController.text};Weekly");
                           UserSimplePreferences.setWeeklyBudgetList(savedWeeklyBudget);
                         } else if (timeTypeDropdownValue == "Monthly"){
-                          savedMonthlyBudget.add("${newElementController.text};${valueController.text};Monthly;${balanceDropdownValue}");
+                          savedMonthlyBudget.add("${newElementController.text};${valueController.text};Monthly");
                           UserSimplePreferences.setMonthlyBudgetList(savedMonthlyBudget);
                         } else {
-                          savedYearlyBudget.add("${newElementController.text};${valueController.text};Yearly;${balanceDropdownValue}");
+                          savedYearlyBudget.add("${newElementController.text};${valueController.text};Yearly");
                           UserSimplePreferences.setYearlyBudgetList(savedYearlyBudget);
                         }
+                        updateBalances();
                         newElementController.text = "";
                         valueController.text = "";
                         setState(() {});
