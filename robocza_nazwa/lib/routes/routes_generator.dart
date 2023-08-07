@@ -1,7 +1,7 @@
 // ignore_for_file: body_might_complete_normally_nullable, dead_code
 
 import 'package:flutter/material.dart';
-import 'package:robocza_nazwa/pages/budget_home.dart';
+import 'package:robocza_nazwa/pages/budget/budget_home.dart';
 import 'package:robocza_nazwa/pages/other/other_home.dart';
 import 'package:robocza_nazwa/pages/other/settings.dart';
 import 'package:robocza_nazwa/pages/other/simple_todo.dart';
