@@ -37,7 +37,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 NavigationItem(title: "Shopping list", icon: Icon(Icons.shopping_cart, color: Theme.of(context).colorScheme.primary), routeName: routeShopping, selected: index == 0, onHighlight: onHighlight,),
-                NavigationItem(title: "Recipes", icon: Icon(Icons.dinner_dining, color: Theme.of(context).colorScheme.primary), routeName: routeRecipes, selected: index == 1, onHighlight: onHighlight),
+                NavigationItem(title: "Food", icon: Icon(Icons.dinner_dining, color: Theme.of(context).colorScheme.primary), routeName: routeRecipes, selected: index == 1, onHighlight: onHighlight),
                 NavigationItem(title: "Budget", icon: Icon(Icons.monetization_on_outlined, color: Theme.of(context).colorScheme.primary), routeName: routeBudget, selected: index == 2, onHighlight: onHighlight),
                 NavigationItem(title: "Other", icon: Icon(Icons.list, color: Theme.of(context).colorScheme.primary), routeName: routeOther, selected: index == 3, onHighlight: onHighlight),
               ],
