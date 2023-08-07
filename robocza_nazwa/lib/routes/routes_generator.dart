@@ -1,6 +1,7 @@
 // ignore_for_file: body_might_complete_normally_nullable, dead_code
 
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:robocza_nazwa/pages/budget/budget_home.dart';
 import 'package:robocza_nazwa/pages/other/other_home.dart';
 import 'package:robocza_nazwa/pages/other/settings.dart';
@@ -47,35 +48,31 @@ class RouteGenerator {
         );
         break;
       case routeActiveShoppingList:
-        return PageRouteBuilder(
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero,
+        return PageTransition(
+          child: const ShoppingActiveList(), 
           settings: settings,
-          pageBuilder: (_, __, ___) => const ShoppingActiveList()
+          type: PageTransitionType.rightToLeftWithFade
         );
         break;
       case routeRecipeDetails:
-        return PageRouteBuilder(
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero,
+        return PageTransition(
+          child: const RecipeDetails(), 
           settings: settings,
-          pageBuilder: (_, __, ___) => const RecipeDetails()
+          type: PageTransitionType.rightToLeftWithFade
         );
         break;
       case routeToDo:
-        return PageRouteBuilder(
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero,
+        return PageTransition(
+          child: const SimpleToDoList(), 
           settings: settings,
-          pageBuilder: (_, __, ___) => const SimpleToDoList()
+          type: PageTransitionType.fade
         );
         break;
       case routeSettings:
-        return PageRouteBuilder(
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero,
+        return PageTransition(
+          child: const Settings(), 
           settings: settings,
-          pageBuilder: (_, __, ___) => const Settings()
+          type: PageTransitionType.fade
         );
         break;
     } 
