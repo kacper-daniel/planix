@@ -91,7 +91,7 @@ class _RecipesHomeState extends State<RecipesHome> {
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 16.0, mainAxisSpacing: 16.0), 
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, crossAxisSpacing: 16.0, mainAxisSpacing: 16.0, childAspectRatio: 1.75), 
                   itemCount: _savedRecipeList.length,
                   itemBuilder: ((context, index) {
                     return GestureDetector(
@@ -355,7 +355,7 @@ class _RecipesHomeState extends State<RecipesHome> {
       ),
       actions: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Material(
               color: Theme.of(context).colorScheme.primary,
@@ -377,7 +377,7 @@ class _RecipesHomeState extends State<RecipesHome> {
                 },
                 borderRadius: BorderRadius.circular(50),
                 child: Container(
-                  width: 100,
+                  width: MediaQuery.of(context).size.width * .3,
                   height: 40,
                   alignment: Alignment.center,
                   child: Text("Try again", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: Theme.of(context).colorScheme.background),),
@@ -389,6 +389,7 @@ class _RecipesHomeState extends State<RecipesHome> {
               borderRadius: BorderRadius.circular(14),
               child: InkWell(
                 onTap: () {
+                  Navigator.of(context).pop();
                   if (filteredRecipeList.isEmpty && catSelected.isEmpty){
                     Navigator.of(context).pushReplacementNamed("/recipeDetails", arguments: index);
                   } else{
@@ -397,7 +398,7 @@ class _RecipesHomeState extends State<RecipesHome> {
                 },
                 borderRadius: BorderRadius.circular(50),
                 child: Container(
-                  width: 100,
+                  width: MediaQuery.of(context).size.width * .3,
                   height: 40,
                   alignment: Alignment.center,
                   child: Text("Go to recipe", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: Theme.of(context).colorScheme.background),),

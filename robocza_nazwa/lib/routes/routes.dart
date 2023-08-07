@@ -8,5 +8,6 @@ const String routeOther = '/other';
 const String routeRecipeDetails = '/recipeDetails';
 const String routeToDo = '/toDo';
 const String routeSettings = "/settings";
+const String routeInfo = "/info";
 
 final navKey = GlobalKey<NavigatorState>();

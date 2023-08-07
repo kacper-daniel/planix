@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:robocza_nazwa/pages/budget/budget_home.dart';
+import 'package:robocza_nazwa/pages/other/app_info.dart';
 import 'package:robocza_nazwa/pages/other/other_home.dart';
 import 'package:robocza_nazwa/pages/other/settings.dart';
 import 'package:robocza_nazwa/pages/other/simple_todo.dart';
@@ -73,6 +74,13 @@ class RouteGenerator {
           child: const Settings(), 
           settings: settings,
           type: PageTransitionType.fade
+        );
+        break;
+      case routeInfo:
+        return PageTransition(
+          child: const AppInfo(), 
+          settings: settings,
+          type: PageTransitionType.rightToLeftWithFade
         );
         break;
     } 

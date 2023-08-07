@@ -53,7 +53,7 @@ class _OtherHomeState extends State<OtherHome> {
         Align(
           alignment: Alignment.centerRight,
           child: IconButton(onPressed: (){
-            //TODO: add info page
+            Navigator.of(context).pushReplacementNamed("/info");
           }, icon: const Icon(Icons.info_outline, color: Colors.black54, size: 28,)),
         )
       ],

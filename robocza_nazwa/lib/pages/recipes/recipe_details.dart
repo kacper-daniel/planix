@@ -1,3 +1,4 @@
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:robocza_nazwa/utils/category_icons.dart';
 import 'package:robocza_nazwa/utils/user_preferences.dart';
@@ -53,25 +54,30 @@ class _RecipeDetailsState extends State<RecipeDetails> {
             }, icon: const Icon(Icons.delete))
           ],
         ),
+        const Divider(color: Colors.black,),
         Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text(title, style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.w500),),
+          padding: const EdgeInsets.only(top: 16.0,),
+          child: Text(title, style: const TextStyle(fontSize: 28.0, fontWeight: FontWeight.w600),),
         ),
         Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               categories.length == 1 ? categories[0] == "Breakfast" ? icons[0] : categories[0] == "Lunch" ? icons[1] : categories[0] == "Dinner" ? icons[2] : categories[0] == "Dessert" ? icons[3] : categories[0] == "Other" ? icons[4] : icons[4] : icons[5],
-              const SizedBox(width: 16.0,),
-              categories.length == 1 ? Text(categories[0]) : Text(categories.join(", "))
-            ],
+              const SizedBox(width: 8.0,),
+              categories.length == 1 ? Text(categories[0], style: const TextStyle(fontSize: 14),) : Text(categories.join("  |  "), style: const TextStyle(fontSize: 14))
+            ], 
           ),
+        ),
+        SizedBox(
+          width: MediaQuery.of(context).size.width * .6,
+          child: const DottedLine(dashLength: 6.0, lineThickness: 1.75,)
         ),
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: SingleChildScrollView(
-            child: Text(description, style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.w400), textAlign: TextAlign.justify,)
+            child: Text(description, style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400))
           ),
         )
       ],
