@@ -1,4 +1,3 @@
-import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:robocza_nazwa/utils/calculate_balance_from_list.dart';
 import 'package:robocza_nazwa/utils/user_preferences.dart';
