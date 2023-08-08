@@ -45,12 +45,10 @@ class _BudgetHomeState extends State<BudgetHome> {
         Padding(
           padding: const EdgeInsets.only(bottom: 6.0),
           child: Container(
-            decoration:  BoxDecoration(
+            decoration:  const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15), bottomRight: Radius.circular(15)),
-              boxShadow: const [
-                BoxShadow(color: Colors.grey, blurRadius: 2, spreadRadius: 0.1)
-            ]),
+              boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 2, spreadRadius: 0.1)]),
             child: SizedBox(
               height: MediaQuery.of(context).size.height * .07,
               child: Form(
