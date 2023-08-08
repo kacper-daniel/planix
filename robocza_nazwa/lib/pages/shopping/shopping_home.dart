@@ -227,7 +227,7 @@ class _ShoppingHomeState extends State<ShoppingHome> {
               color: Colors.white,
               borderRadius: BorderRadius.circular(40),
               boxShadow: const [
-                BoxShadow(color: Colors.grey, blurRadius: 3.5, spreadRadius: 0.1)
+                BoxShadow(color: Colors.grey, blurRadius: 2, spreadRadius: 0.1)
             ]),
             child: TextFormField(       
               controller: searchController,
@@ -271,6 +271,7 @@ class _ShoppingHomeState extends State<ShoppingHome> {
         child: Center(
           child: TextFormField(
             autofocus: true,
+            textCapitalization: TextCapitalization.sentences,
             controller: newElementController,
             decoration: const InputDecoration(
               border: UnderlineInputBorder(),

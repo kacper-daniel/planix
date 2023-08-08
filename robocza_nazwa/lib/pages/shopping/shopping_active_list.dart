@@ -144,6 +144,7 @@ class _ShoppingActiveListState extends State<ShoppingActiveList> {
         child: Center(
           child: TextFormField(
             autofocus: true,
+            textCapitalization: TextCapitalization.sentences,
             controller: newElementController,
             decoration: const InputDecoration(
               border: UnderlineInputBorder(),

@@ -35,7 +35,7 @@ class UserSimplePreferences {
   static List<String>? getWeeklyBudget() => _preferences.getStringList(_keyWeeklyBudget);
 
   static Future setMonthlyBudgetList(List<String> monthlyBudget) async =>
-    await _preferences.setStringList(_keyWeeklyBudget, monthlyBudget);
+    await _preferences.setStringList(_keyMonthlyBudget, monthlyBudget);
 
   static List<String>? getMonthlyBudget() => _preferences.getStringList(_keyMonthlyBudget);
 

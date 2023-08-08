@@ -62,9 +62,13 @@ class _RecipesHomeState extends State<RecipesHome> {
                             for (int j = 0; j < catSelected.length; j++){
                               helperSelectedCategories.add(categories[catSelected[j]]);
                             }
+                            bool added = false;
                             for (int j = 0; j < helperCategories.length; j++){
                               if (helperSelectedCategories.contains(helperCategories[j])){
-                                filteredRecipeList.add([_savedRecipeList[i], i]);
+                                if (!added){
+                                  filteredRecipeList.add([_savedRecipeList[i], i]);
+                                  added = true;
+                                }
                               }
                             }
                           }
@@ -245,6 +249,7 @@ class _RecipesHomeState extends State<RecipesHome> {
                       }
                     },
                     autofocus: true,
+                    textCapitalization: TextCapitalization.sentences,
                     controller: recipeTitleController,
                     decoration: const InputDecoration(
                       border: UnderlineInputBorder(),
@@ -285,6 +290,7 @@ class _RecipesHomeState extends State<RecipesHome> {
                     child: SingleChildScrollView(
                       child: TextFormField(
                         autofocus: false,
+                        textCapitalization: TextCapitalization.sentences,
                         controller: recipeDescriptionController,
                         keyboardType: TextInputType.multiline,
                         maxLines: null,  

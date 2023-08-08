@@ -10,13 +10,13 @@ class AppInfo extends StatelessWidget {
       children: [
         Text("App version: 0.0.1", style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),),
         SizedBox(height: 12.0,),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.copyright),
-            Text("Kacper Daniel", style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400),)
-          ],
-        )
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children: [
+        //     Icon(Icons.copyright),
+        //     Text("Kacper Daniel", style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w400),)
+        //   ],
+        // )
       ],
     );
   }
