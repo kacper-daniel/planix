@@ -242,7 +242,7 @@ class _RecipesHomeState extends State<RecipesHome> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     validator: (value){
-                      if (value == null){
+                      if (value == null || value.isEmpty){
                         return "Please enter some text";
                       } else{
                         return null;
@@ -315,7 +315,7 @@ class _RecipesHomeState extends State<RecipesHome> {
           Navigator.of(context).pop();
         }, icon: Icon(Icons.close, color: Theme.of(context).colorScheme.primary,)),
         IconButton(onPressed: (){
-          if (_formKey.currentState!.validate()){
+          if (_formKey.currentState!.validate() && newRecipeCatSelected.isNotEmpty){
             var helper = UserSimplePreferences.getRecipeList() ?? [];
             var helperCategories = [];
             for (int x = 0; x < newRecipeCatSelected.length; x++){
@@ -330,6 +330,8 @@ class _RecipesHomeState extends State<RecipesHome> {
               _savedRecipeList = UserSimplePreferences.getRecipeList() ?? [];
             });
             Navigator.of(context).pop();
+          } else{
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Invalid input")));
           }
         }, icon: Icon(Icons.done, color: Theme.of(context).colorScheme.primary,))
       ]

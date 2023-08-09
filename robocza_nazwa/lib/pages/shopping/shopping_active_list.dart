@@ -37,7 +37,20 @@ class _ShoppingActiveListState extends State<ShoppingActiveList> {
                         padding: const EdgeInsets.all(12.0),
                         child: Text(activeList![index].toString().split(";")[0], style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16.0),),
                       ),
-                    )
+                    ),
+                     onDismissed: (DismissDirection direction) {
+                      setState(() {
+                        var helper = UserSimplePreferences.getShoppingList() ?? [];
+                        for (int i = 0; i < helper.length; i++){
+                          if (helper[i] == activeList![index]){
+                            helper[i] = "${helper[i].split(";")[0]};false";
+                          }
+                        }
+                        UserSimplePreferences.setShoppingList(helper);
+                        activeList!.removeAt(index);
+                        setState(() {});
+                      });
+                    },
                   );
                 }
               ),
@@ -104,16 +117,6 @@ class _ShoppingActiveListState extends State<ShoppingActiveList> {
                     borderRadius: BorderRadius.circular(50),
                     child: InkWell(                   
                       onTap: () {
-                        var helper = UserSimplePreferences.getShoppingList();
-                        if (helper != null){
-                          for (int x = 0; x < helper.length; x++){
-                            if (helper[x].split(";")[1] == "true"){
-                              helper[x] = "${helper[x].split(";")[0]};false";
-                            }
-                          }
-                          UserSimplePreferences.setShoppingList(helper);
-                        }
-                        setState(() {});
                         Navigator.of(context).pushReplacementNamed("/shopping");
                       },
                       borderRadius: BorderRadius.circular(50),
