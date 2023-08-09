@@ -1,2 +1,2 @@
 # robocza-nazwa
-Experimental version of a planner and helper mobile app 
+Experimental version of a minimalist mobile app with such features as shopping list, recipe library, budget planner and to-do list
