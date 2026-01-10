@@ -1,5 +1,6 @@
 # Planix - Pocket lists
-Experimental version of a minimalist mobile app with such features as shopping list, recipe library, budget planner and to-do list
+Minimalist app with features like To-Do List, Shopping List, Budget planning and Recipe Manager. 
+Written purely in Flutter
 
 --------------------------------------
 <!--
